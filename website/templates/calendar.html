@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
+
+<!-- send events from Flask to JS -->
+<script>
+  window.calendarEvents = {{ events | tojson }};
+</script>
+<script defer src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+
+<div class="calendar-wrapper">
+  <h1>My Calendar</h1>
+
+  <div class="calendar-controls">
+    <!-- Month nav arrows -->
+    <button id="prev-month" class="nav-arrow" aria-label="Previous Month">&lt;</button>
+
+    <!-- Dropdowns -->
+    <label for="day-select">Day:</label>
+    <select id="day-select"></select>
+
+    <label for="month-select">Month:</label>
+    <select id="month-select"></select>
+
+    <label for="year-select">Year:</label>
+    <select id="year-select"></select>
+
+    <button id="next-month" class="nav-arrow" aria-label="Next Month">&gt;</button>
+
+    <button id="reset-btn">Reset to Today</button>
+  </div>
+
+  <!-- Day of week headers -->
+  <div class="calendar-header">
+    <div>Sun</div>
+    <div>Mon</div>
+    <div>Tue</div>
+    <div>Wed</div>
+    <div>Thu</div>
+    <div>Fri</div>
+    <div>Sat</div>
+  </div>
+
+  <!-- Calendar grid -->
+  <div id="calendar-grid" class="calendar-grid"></div>
+</div>
+{% endblock %}

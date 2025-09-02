@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+
+<h1 id="main-title" class="main-title fade-in">My Diary</h1>
+
+<p id="typed-output" class="subtitle"></p>
+
+
+<p class="description">
+  Welcome to <strong>My Diary</strong> — your personal digital organizer! 
+  Whether you're managing daily tasks or planning special events, My Diary makes it easy to stay on top of your life. 
+  Add items to your <strong>To-Do List</strong> to keep track of your responsibilities, 
+  and log upcoming activities in the <strong>Events List</strong> — all of which are automatically 
+  saved and organized in your <strong>Calendar</strong>. 
+  It's a simple, secure, and convenient way to manage your time and stay productive, every day.
+</p>
+
+
+{% if session.get('user_email') %}
+  <div class="login-success-message">
+    You are logged in. Let's get started! Now you can Access content in your navbar.
+  </div>
+{% endif %}
+
+<div class="button-container">
+  {% if session.get('user_email') %}
+    <a href="{{ url_for('auth.logout') }}" class="btn-home logout-btn">Logout</a>
+  {% else %}
+    <a href="{{ url_for('auth.login') }}" class="btn-home login-btn">Login</a>
+
+    {% if not session.get('just_signed_up') %}
+      <a href="{{ url_for('auth.sign_up') }}" class="btn-home signup-btn">Sign Up</a>
+    {% endif %}
+  {% endif %}
+</div>
+<script defer src="{{ url_for('static', filename='js/home.js') }}"></script>
+
+{% endblock %}

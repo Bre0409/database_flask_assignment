@@ -1,0 +1,203 @@
+.typing-container {
+  width: fit-content;
+  border-right: 2px solid #000;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.typing-text {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 1.5rem;
+  animation: typing 4s steps(30, end), blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+.main-title {
+  font-size: 4rem;
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  color: #444;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 10px 6px 4px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+  animation: fadeIn 2s ease-out forwards;
+}
+/* Fade-in keyframes */
+@keyframes fadeIn {
+  to {
+    opacity: .2;
+  }
+    to {
+    opacity: .5;
+  }
+    to {
+    opacity: 1;
+  }
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: #666;
+  text-align: center;
+  height: 1.5em;           
+  line-height: 1.5em;     
+  white-space: nowrap;     
+  overflow: hidden;        
+  position: relative;
+}
+
+.description {
+  max-width: 700px;
+  margin: auto;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #444;
+  margin-bottom: 60px;
+  padding: 15px;
+  padding-top: 0px;
+
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.btn-home {
+  display: inline-block;
+  padding: 10px 25px;
+  margin: 0 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+  border: 1px solid transparent;
+  box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.login-btn {
+  background-color: #444;
+  color: #fff;
+}
+
+.login-btn:hover {
+  background-color: #666;
+  color: #fff;
+ 
+}
+
+.signup-btn {
+  background-color: transparent;
+  color: #444;
+  border: 1px solid #444;
+}
+
+.signup-btn:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+.login-success-message {
+  margin: auto;
+  margin-bottom: 50px;
+  color: #155724;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+  width: 80%;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logout-btn{
+  color: #fff;
+  background-color: #444;
+}
+.logout-btn:hover{
+  color: #fff;
+}
+
+.container {
+  margin-top: 12%;
+  margin-bottom: 5%;
+  padding-bottom: 5%;
+}
+@media(max-width: 767px) {
+ .description {
+      font-size: 0.7rem;
+      margin-top: 0px;
+      padding-bottom: 5%;
+      width: 60%;
+      margin-bottom: 0px;   
+  }
+  .login-success-message {
+  font-size: 0.7rem;
+  width: 60%;
+}
+.logout-btn{
+  display: none;
+}
+}
+@media(min-width: 768px){
+ .container{
+    width:50%;
+    margin-top: 15%;
+    padding-bottom: 5%;
+  }
+}
+ 
+@media(max-width: 376px) {
+ .description {
+      font-size: 0.8rem;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      width: 80%;
+
+  }
+  .main-title{
+    font-size: 2.5rem;
+  }
+  .button-container {
+  margin-top: 10px;
+}
+.subtitle {
+  font-size: .9rem;
+  height: 1.5em;           
+ margin-bottom: 5px;
+ margin-top: 5px;
+ 
+}
+
+.login-success-message {
+  font-size: .8rem;
+}
+
+}
+
+
+ 
+
+ 
+

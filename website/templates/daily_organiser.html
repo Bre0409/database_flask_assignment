@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Daily Organiser{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/daily_organiser.css') }}">
+
+<h1 class="main-title">Daily Organiser</h1>
+<p class="description">
+ <strong>Add, Edit, Complete</strong>  or <strong>Delete</strong> tasks by selecting a day below.
+</p>
+
+<!-- Add task form -->
+<form method="POST" action="{{ url_for('views.task_list') }}" class="task-form">
+  <input type="hidden" name="day" id="dayInput" value="{{ selected_day }}">
+  <input type="text" name="task" placeholder="Add a task for {{ selected_day }}" required>
+  <button type="submit">Add Task</button>
+</form>
+
+<!-- Day Selector Tabs -->
+<div class="day-tabs">
+  {% for day in ["Today", "Tomorrow", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
+    <a href="{{ url_for('views.task_list', day=day) }}"
+       class="day-tab {% if loop.index0 == selected_day_index %}active{% endif %}">
+       {{ day }}
+    </a>
+  {% endfor %}
+</div>
+
+<!--Task List -->
+<div class="task-list">
+  {% for task in tasks if task.day == selected_day %}
+    <div class="task {% if task.completed %}completed{% endif %}">
+      
+      <span class="task-text" id="text-{{ task.id }}">{{ task.text }}</span>
+
+      <!-- Edit Form -->
+      <form method="POST" action="{{ url_for('views.edit_task', task_id=task.id) }}"
+            class="edit-form" id="form-{{ task.id }}">
+        <input type="text" name="edited_text" value="{{ task.text }}" required>
+        <button type="submit" class="save-btn small">Save</button>
+        <button type="button" class="cancel-btn small" onclick="toggleEdit({{ task.id }})">Cancel</button>
+      </form>
+
+      <!-- Action Buttons -->
+      <div class="task-actions">
+        <form method="POST" action="{{ url_for('views.complete_task', task_id=task.id) }}" style="display:inline;">
+          <button type="submit" class="complete">{% if task.completed %}Undo{% else %}✔{% endif %}</button>
+        </form>
+        <form method="POST" action="{{ url_for('views.delete_task', task_id=task.id) }}" style="display:inline;">
+          <button type="submit" class="delete">🗑</button>
+        </form>
+        <button type="button" class="edit-toggle-btn" data-task-id="{{ task.id }}">✏️</button>
+      </div>
+    </div>
+  {% else %}
+    <p class="no-tasks">No tasks for {{ selected_day }}</p>
+  {% endfor %}
+</div>
+
+<script src="{{ url_for('static', filename='js/daily_organiser.js') }}"></script>
+{% endblock %}
