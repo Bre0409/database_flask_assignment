@@ -5,46 +5,51 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
 
-<!-- send events from Flask to JS -->
-<script>
-  window.calendarEvents = {{ events | tojson }};
-</script>
-<script defer src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+{% if session.get("user_id") %}
+  <!-- Send events + tasks to JS -->
+  <script>
+    window.calendarEvents = {{ events | tojson }};
+  </script>
+  <script defer src="{{ url_for('static', filename='js/calendar.js') }}"></script>
 
-<div class="calendar-wrapper">
-  <h1>My Calendar</h1>
+  <div class="calendar-wrapper">
+    <h1>My Calendar</h1>
 
-  <div class="calendar-controls">
-    <!-- Month nav arrows -->
-    <button id="prev-month" class="nav-arrow" aria-label="Previous Month">&lt;</button>
+    <div class="calendar-controls">
+      <!-- Navigation -->
+      <button id="prev-month" class="nav-arrow" aria-label="Previous Month">&lt;</button>
 
-    <!-- Dropdowns -->
-    <label for="day-select">Day:</label>
-    <select id="day-select"></select>
+      <!-- Dropdowns -->
+      <label for="day-select">Day:</label>
+      <select id="day-select"></select>
 
-    <label for="month-select">Month:</label>
-    <select id="month-select"></select>
+      <label for="month-select">Month:</label>
+      <select id="month-select"></select>
 
-    <label for="year-select">Year:</label>
-    <select id="year-select"></select>
+      <label for="year-select">Year:</label>
+      <select id="year-select"></select>
 
-    <button id="next-month" class="nav-arrow" aria-label="Next Month">&gt;</button>
+      <button id="next-month" class="nav-arrow" aria-label="Next Month">&gt;</button>
+      <button id="reset-btn">Reset to Today</button>
+    </div>
 
-    <button id="reset-btn">Reset to Today</button>
+    <!-- Week headers -->
+    <div class="calendar-header">
+      <div>Sun</div>
+      <div>Mon</div>
+      <div>Tue</div>
+      <div>Wed</div>
+      <div>Thu</div>
+      <div>Fri</div>
+      <div>Sat</div>
+    </div>
+
+    <!-- Grid -->
+    <div id="calendar-grid" class="calendar-grid"></div>
   </div>
-
-  <!-- Day of week headers -->
-  <div class="calendar-header">
-    <div>Sun</div>
-    <div>Mon</div>
-    <div>Tue</div>
-    <div>Wed</div>
-    <div>Thu</div>
-    <div>Fri</div>
-    <div>Sat</div>
+{% else %}
+  <div class="alert alert-warning mt-3">
+    Please <a href="{{ url_for('auth.login') }}">log in</a> to view your calendar.
   </div>
-
-  <!-- Calendar grid -->
-  <div id="calendar-grid" class="calendar-grid"></div>
-</div>
+{% endif %}
 {% endblock %}

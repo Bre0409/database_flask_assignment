@@ -1,39 +1,83 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from werkzeug.security import generate_password_hash, check_password_hash
+from . import db
+from .models import User
+from datetime import datetime
 
-# Blueprint named 'auth' for authentication routes
-auth = Blueprint('auth', __name__)
+auth = Blueprint("auth", __name__)
 
-# Home page route
-@auth.route('/')
-@auth.route('/home')
-def home():
-    session.pop('just_signed_up', None)
-    return render_template('home.html')
-
-# Sign-up route (form only, no saving)
-@auth.route('/sign-up', methods=['GET', 'POST'])
+# --- SIGN UP ---
+@auth.route("/sign-up", methods=["GET", "POST"])
 def sign_up():
-    if request.method == 'POST':
-        flash('Signup feature disabled (no storage).')
-        return redirect(url_for('auth.login'))
-    return render_template('sign_up.html')
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+        first_name = request.form.get("firstName", "").strip()
+        password1 = request.form.get("password1")
+        password2 = request.form.get("password2")
 
-# Login route (form only, no validation)
-@auth.route('/login', methods=['GET', 'POST'])
+        # Validate inputs
+        if not email or not first_name or not password1 or not password2:
+            flash("All fields are required.", category="error")
+            return redirect(url_for("auth.sign_up"))
+
+        # Check if email already exists
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash("Email is already registered. Please log in.", category="error")
+            return redirect(url_for("auth.login"))
+
+        # Check password match
+        if password1 != password2:
+            flash("Passwords do not match.", category="error")
+            return redirect(url_for("auth.sign_up"))
+
+        # Hash password
+        hashed_pw = generate_password_hash(password1, method="sha256")
+
+        # Create new user
+        new_user = User(
+            email=email,
+            first_name=first_name,
+            password=hashed_pw,
+            created_at=datetime.utcnow()
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+        # ✅ Do not auto-login
+        flash("Account created successfully! Please log in.", category="success")
+        return redirect(url_for("auth.login"))
+
+    return render_template("sign_up.html")
+
+
+# --- LOGIN ---
+@auth.route("/login", methods=["GET", "POST"])
 def login():
-    success_message = None
-    if session.get('just_signed_up'):
-        success_message = "Signup successful! Please log in."
-        session.pop('just_signed_up', None)
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password")
 
-    if request.method == 'POST':
-        flash('Login feature disabled (no storage).')
-        return redirect(url_for('auth.home'))
+        user = User.query.filter_by(email=email).first()
 
-    return render_template('login.html', error=None, success_message=success_message)
+        if user and check_password_hash(user.password, password):
+            # ✅ Store session values
+            session["user_id"] = user.id
+            session["user_email"] = user.email
+            session["first_name"] = user.first_name
+            flash(f"Welcome back, {user.first_name}!", category="success")
+            return redirect(url_for("views.home"))
+        else:
+            flash("Invalid email or password.", category="error")
+            return redirect(url_for("auth.login"))
 
-# Logout route
-@auth.route('/logout')
+    return render_template("login.html")
+
+
+# --- LOGOUT ---
+@auth.route("/logout")
 def logout():
     session.clear()
-    return render_template('logout.html')
+    flash("You have been logged out.", category="info")
+    return redirect(url_for("auth.login"))
+

@@ -30,6 +30,27 @@ form {
 .incorrect {
     border-color: red !important;
 }
+/* Flash Messages */
+#flash-messages {
+    position: fixed;
+    top: 80px;           /* below the navbar */
+    right: 20px;
+    z-index: 2000;
+    width: auto;
+    max-width: 350px;
+}
+
+#flash-messages .alert {
+    font-size: 0.95rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    border-radius: 6px;
+    opacity: 0.95;
+    transition: opacity 0.3s ease;
+}
+
+#flash-messages .alert:hover {
+    opacity: 1;  /* stay solid when hovered */
+}
 
 
 @media (max-width: 992px) {

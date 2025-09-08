@@ -3,7 +3,6 @@
 {% block title %}Events{% endblock %}
 
 {% block content %}
-
 <link rel="stylesheet" href="{{ url_for('static', filename='css/events.css') }}">
 
 <div class="container mt-5">
@@ -16,14 +15,30 @@
         method="POST" 
         class="event-form-row"
     >
-        <input type="text" name="title" placeholder="Event Title" required value="{{ edit_event.title if edit_event else '' }}">
-        <textarea name="description" placeholder="Description" rows="1">{{ edit_event.description if edit_event else '' }}</textarea>
-        <input type="date" name="date" required value="{{ edit_event.date if edit_event else '' }}">
+        <input 
+            type="text" 
+            name="title" 
+            placeholder="Event Title" 
+            required 
+            value="{{ edit_event.title if edit_event else '' }}"
+        >
+
+        <textarea 
+            name="description" 
+            placeholder="Description" 
+            rows="1"
+        >{{ edit_event.description if edit_event else '' }}</textarea>
+        
+        <input 
+            type="date" 
+            name="date" 
+            required 
+            value="{% if edit_event and edit_event.date %}{{ edit_event.date.strftime('%Y-%m-%d') }}{% endif %}"
+        >
        
         <button type="submit" class="add-btn">
-  {{ edit_event and "Update" or "Add Event" }}
-</button>
-
+            {{ edit_event and "Update" or "Add Event" }}
+        </button>
     </form>
 
     <hr>
@@ -36,8 +51,8 @@
                 {% for event in events %}
                     <li class="event-item">
                         <h5>{{ event.title }}</h5>
-                        <p>{{ event.description }}</p>
-                        <small>{{ event.date }}</small>
+                        <p>{{ event.description or "No description provided." }}</p>
+                        <small>{{ event.date.strftime('%B %d, %Y') }}</small>
                         <div class="event-actions">
                             <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="edit-btn">Edit</a>
                             <form action="{{ url_for('events.delete_event', event_id=event.id) }}" method="POST" style="display:inline;">

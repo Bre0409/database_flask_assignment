@@ -1,11 +1,11 @@
-// Day switching tabs
+// Day tabs switching
 document.addEventListener("DOMContentLoaded", () => {
   const tabs = document.querySelectorAll(".day-tab");
 
   tabs.forEach((tab) => {
     tab.addEventListener("click", (event) => {
-      event.preventDefault(); 
-      const selectedDay = tab.textContent.trim();
+      event.preventDefault();
+      const selectedDay = tab.textContent.replace("*", "").trim(); // strip asterisk
       const url = new URL(window.location.href);
       url.searchParams.set("day", selectedDay);
       window.location.href = url;
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Toggle edit form 
+// Toggle edit form
 function toggleEdit(taskId) {
   const textSpan = document.getElementById(`text-${taskId}`);
   const editForm = document.getElementById(`form-${taskId}`);

@@ -7,36 +7,45 @@
 
 <h1 class="main-title">Daily Organiser</h1>
 <p class="description">
- <strong>Add, Edit, Complete</strong>  or <strong>Delete</strong> tasks by selecting a day below.
+  <strong>Add, Edit, Complete</strong> or <strong>Delete</strong> tasks by selecting a day below.
 </p>
-
-<!-- Add task form -->
-<form method="POST" action="{{ url_for('views.task_list') }}" class="task-form">
-  <input type="hidden" name="day" id="dayInput" value="{{ selected_day }}">
-  <input type="text" name="task" placeholder="Add a task for {{ selected_day }}" required>
-  <button type="submit">Add Task</button>
-</form>
 
 <!-- Day Selector Tabs -->
 <div class="day-tabs">
-  {% for day in ["Today", "Tomorrow", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
+  {% for day in weekdays %}
+    {% set day_date = get_date_for_day(day) %}
+    {% set has_tasks = Task.query.filter_by(user_id=session['user_id'], due_date=day_date).count() > 0 %}
     <a href="{{ url_for('views.task_list', day=day) }}"
-       class="day-tab {% if loop.index0 == selected_day_index %}active{% endif %}">
-       {{ day }}
+       class="day-tab {% if day == selected_day %}active{% endif %}">
+       {{ day }}{% if has_tasks %}*{% endif %}
     </a>
   {% endfor %}
 </div>
 
-<!--Task List -->
+<!-- Show Selected Date -->
+<h3 class="text-center mb-3">
+  {{ selected_day }} – {{ selected_date.strftime("%A %d %B %Y") }}
+</h3>
+
+<!-- Add task form -->
+<form method="POST" action="{{ url_for('views.task_list', day=selected_day) }}" class="task-form">
+  <input type="text" name="task" placeholder="Add a task for {{ selected_day }}" required>
+  <button type="submit">Add Task</button>
+</form>
+
+<!-- Task List -->
 <div class="task-list">
-  {% for task in tasks if task.day == selected_day %}
+  {% for task in tasks %}
     <div class="task {% if task.completed %}completed{% endif %}">
-      
-      <span class="task-text" id="text-{{ task.id }}">{{ task.text }}</span>
+      <span class="task-text" id="text-{{ task.id }}">
+        {{ task.text }} <small>({{ task.due_date.strftime("%A %d %B %Y") }})</small>
+      </span>
 
       <!-- Edit Form -->
-      <form method="POST" action="{{ url_for('views.edit_task', task_id=task.id) }}"
-            class="edit-form" id="form-{{ task.id }}">
+      <form method="POST"
+            action="{{ url_for('views.edit_task', task_id=task.id) }}"
+            class="edit-form"
+            id="form-{{ task.id }}">
         <input type="text" name="edited_text" value="{{ task.text }}" required>
         <button type="submit" class="save-btn small">Save</button>
         <button type="button" class="cancel-btn small" onclick="toggleEdit({{ task.id }})">Cancel</button>
@@ -44,10 +53,14 @@
 
       <!-- Action Buttons -->
       <div class="task-actions">
-        <form method="POST" action="{{ url_for('views.complete_task', task_id=task.id) }}" style="display:inline;">
+        <form method="POST"
+              action="{{ url_for('views.complete_task', task_id=task.id) }}"
+              style="display:inline;">
           <button type="submit" class="complete">{% if task.completed %}Undo{% else %}✔{% endif %}</button>
         </form>
-        <form method="POST" action="{{ url_for('views.delete_task', task_id=task.id) }}" style="display:inline;">
+        <form method="POST"
+              action="{{ url_for('views.delete_task', task_id=task.id) }}"
+              style="display:inline;">
           <button type="submit" class="delete">🗑</button>
         </form>
         <button type="button" class="edit-toggle-btn" data-task-id="{{ task.id }}">✏️</button>

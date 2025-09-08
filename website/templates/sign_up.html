@@ -2,11 +2,10 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
-
 <link rel="stylesheet" href="{{ url_for('static', filename='css/sign_up.css') }}" />
 
 <form id="signup-form" method="POST" novalidate>
-  <h3 class="mainheader" style="text-align:center;">Sign Up</h3>
+  <h3 class="mainheader text-center">Sign Up</h3>
 
   <div class="form-group">
     <label for="email">Email Address</label>
@@ -56,21 +55,8 @@
     />
   </div>
 
-  <div id="error-message" style="color: red; margin-top: 10px;">
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-          {{ message }}<br />
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-  </div>
-
-  <br />
-
-  <button class="signupbtn" type="submit">Submit</button>
+  <button class="btn btn-primary signupbtn" type="submit">Submit</button>
 </form>
 
 <script type="text/javascript" src="{{ url_for('static', filename='js/sign_up.js') }}"></script>
-
 {% endblock %}
