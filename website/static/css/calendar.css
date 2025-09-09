@@ -144,6 +144,12 @@ h1 {
   font-weight: bold;
   color: black;
 }
+a{
+  color: #222;
+}
+a:hover{
+  color: #444;  
+}
 
 
 @media (min-width: 768px) {

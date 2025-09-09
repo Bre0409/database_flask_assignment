@@ -145,6 +145,13 @@ background-color: #666;
 .delete-btn:hover {
     opacity: 0.85;
 }
+a{
+  color: #222;
+}
+a:hover{
+  color: #444;  
+}
+
     
     @media(max-width: 768px){
 body {

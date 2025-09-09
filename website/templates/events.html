@@ -67,4 +67,11 @@
         {% endif %}
     </div>
 </div>
+<hr>
+<div class="schedule-links" style="margin-top: 20px; text-align: center;">
+  <h4>View Schedules</h4>
+  <a href="{{ url_for('views.schedule_daily') }}">📅 Daily Schedule</a> |
+  <a href="{{ url_for('views.schedule_weekly') }}">📆 Weekly Schedule</a> |
+  <a href="{{ url_for('views.schedule_monthly') }}">🗓 Monthly Schedule</a>
+</div>
 {% endblock %}

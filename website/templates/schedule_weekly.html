@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Weekly Schedule{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/daily_organiser.css') }}">
+
+<div class="container mt-4">
+  <h1 class="main-title">Weekly Schedule</h1>
+  <p class="description">Your tasks for the week.</p>
+
+  {% if weekly_tasks %}
+    {% for day, tasks in weekly_tasks.items() %}
+      <h3>{{ day.strftime("%A %d %B %Y") }}</h3>
+      <ul class="task-list">
+        {% for task in tasks %}
+          <li class="task {% if task.completed %}completed{% endif %}">
+            <span>{{ task.text }}</span>
+          </li>
+        {% else %}
+          <li class="no-tasks">No tasks for this day.</li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  {% else %}
+    <p class="no-tasks">No tasks scheduled this week.</p>
+  {% endif %}
+</div>
+<div class="schedule-links" style="margin-top: 20px; text-align: center;">
+  <h4>View Schedules</h4>
+  <a href="{{ url_for('views.schedule_daily') }}">📅 Daily Schedule</a> |
+ 
+  <a href="{{ url_for('views.schedule_monthly') }}">🗓 Monthly Schedule</a>
+</div>
+{% endblock %}

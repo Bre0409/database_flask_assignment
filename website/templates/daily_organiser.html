@@ -10,28 +10,21 @@
   <strong>Add, Edit, Complete</strong> or <strong>Delete</strong> tasks by selecting a day below.
 </p>
 
-<!-- Day Selector Tabs -->
-<div class="day-tabs">
-  {% for day in weekdays %}
-    {% set day_date = get_date_for_day(day) %}
-    {% set has_tasks = Task.query.filter_by(user_id=session['user_id'], due_date=day_date).count() > 0 %}
-    <a href="{{ url_for('views.task_list', day=day) }}"
-       class="day-tab {% if day == selected_day %}active{% endif %}">
-       {{ day }}{% if has_tasks %}*{% endif %}
-    </a>
-  {% endfor %}
-</div>
-
-<!-- Show Selected Date -->
-<h3 class="text-center mb-3">
-  {{ selected_day }} – {{ selected_date.strftime("%A %d %B %Y") }}
-</h3>
-
 <!-- Add task form -->
 <form method="POST" action="{{ url_for('views.task_list', day=selected_day) }}" class="task-form">
   <input type="text" name="task" placeholder="Add a task for {{ selected_day }}" required>
   <button type="submit">Add Task</button>
 </form>
+
+<!-- Day Selector Tabs -->
+<div class="day-tabs">
+  {% for day in weekdays %}
+    <a href="{{ url_for('views.task_list', day=day) }}"
+       class="day-tab {% if day == selected_day %}active{% endif %}">
+       {{ day }}
+    </a>
+  {% endfor %}
+</div>
 
 <!-- Task List -->
 <div class="task-list">
@@ -71,5 +64,15 @@
   {% endfor %}
 </div>
 
+<!-- 📌 Schedule Links -->
+<hr>
+<div class="schedule-links" style="margin-top: 20px; text-align: center;">
+  <h4>View Schedules</h4>
+  <a href="{{ url_for('views.schedule_daily') }}">📅 Daily Schedule</a> |
+  <a href="{{ url_for('views.schedule_weekly') }}">📆 Weekly Schedule</a> |
+  <a href="{{ url_for('views.schedule_monthly') }}">🗓 Monthly Schedule</a>
+</div>
+
 <script src="{{ url_for('static', filename='js/daily_organiser.js') }}"></script>
 {% endblock %}
+
