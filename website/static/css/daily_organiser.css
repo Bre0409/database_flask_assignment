@@ -47,7 +47,6 @@
 
 /* Days */
 .day-tabs {
-  /* border: solid red 2px; */
   width: auto;
   display: grid;
   justify-content:center;

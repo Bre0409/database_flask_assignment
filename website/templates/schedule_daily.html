@@ -3,18 +3,21 @@
 {% block title %}Daily Schedule{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/daily_organiser.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/daily.css') }}">
 
 <div class="container mt-4">
   <h1 class="main-title">Daily Schedule</h1>
   <p class="description">Here’s your schedule for today.</p>
+
+  <!-- ✅ Today's Date Header -->
+  <h3>{{ current_date.strftime("%d - %A, %B %Y") }}</h3>
 
   <div class="task-list">
     {% if tasks %}
       {% for task in tasks %}
         <div class="task {% if task.completed %}completed{% endif %}">
           <span>{{ task.text }}</span>
-          <small>({{ task.due_date.strftime("%A %d %B %Y") }})</small>
+          
         </div>
       {% endfor %}
     {% else %}
@@ -22,6 +25,7 @@
     {% endif %}
   </div>
 </div>
+
 <div class="schedule-links" style="margin-top: 20px; text-align: center;">
   <h4>View Schedules</h4>
   <a href="{{ url_for('views.schedule_weekly') }}">📆 Weekly Schedule</a> |

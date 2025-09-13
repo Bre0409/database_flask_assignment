@@ -129,6 +129,7 @@ def edit_task(task_id):
 
 
 # ---------------- Daily Schedule ----------------
+# ---------------- Daily Schedule ----------------
 @views.route("/schedule/daily")
 def schedule_daily():
     if "user_id" not in session:
@@ -138,7 +139,8 @@ def schedule_daily():
     today = datetime.now(LOCAL_TZ).date()
     tasks = Task.query.filter_by(user_id=session["user_id"], due_date=today).all()
 
-    return render_template("schedule_daily.html", tasks=tasks)
+    return render_template("schedule_daily.html", tasks=tasks, current_date=today)
+
 
 
 # ---------------- Weekly Schedule ----------------
@@ -158,12 +160,18 @@ def schedule_weekly():
         Task.due_date <= end_week,
     ).order_by(Task.due_date.asc()).all()
 
-    # Group tasks by date
+    # ✅ Only include days with tasks, sorted by date
     weekly_tasks = {}
     for task in all_tasks:
         weekly_tasks.setdefault(task.due_date, []).append(task)
 
-    return render_template("schedule_weekly.html", weekly_tasks=weekly_tasks)
+    weekly_tasks = dict(sorted(weekly_tasks.items()))
+
+    return render_template(
+        "schedule_weekly.html",
+        weekly_tasks=weekly_tasks,
+        current_date=start_week  # for "Week of ..." header
+    )
 
 
 # ---------------- Monthly Schedule ----------------
@@ -176,21 +184,29 @@ def schedule_monthly():
     today = datetime.now(LOCAL_TZ).date()
     start_month = today.replace(day=1)
 
+    # Get first day of next month to calculate end of current month
     if today.month == 12:
         next_month = today.replace(year=today.year + 1, month=1, day=1)
     else:
         next_month = today.replace(month=today.month + 1, day=1)
     end_month = next_month - timedelta(days=1)
 
+    # Fetch all tasks for the month
     all_tasks = Task.query.filter(
         Task.user_id == session["user_id"],
         Task.due_date >= start_month,
         Task.due_date <= end_month,
     ).order_by(Task.due_date.asc()).all()
 
-    # Group tasks by date
+    # ✅ Only include days with tasks, sorted by date
     monthly_tasks = {}
     for task in all_tasks:
         monthly_tasks.setdefault(task.due_date, []).append(task)
 
-    return render_template("schedule_monthly.html", monthly_tasks=monthly_tasks)
+    monthly_tasks = dict(sorted(monthly_tasks.items()))
+
+    return render_template(
+        "schedule_monthly.html",
+        monthly_tasks=monthly_tasks,
+        current_date=today  # for header
+    )
