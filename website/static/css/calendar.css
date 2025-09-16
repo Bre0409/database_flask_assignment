@@ -3,14 +3,17 @@
   width: 100%;
   margin: 40px auto;
   text-align: center;
-  font-family: Arial, sans-serif;
-  /* border: 2px solid blue; */
   box-sizing: border-box;
   padding: 10px;
 }
 
 h1 {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+  color: #444;
+  font-family: 'Dancing Script', cursive;
+   font-size: 3.5rem;
+   
 }
 
 .calendar-controls {

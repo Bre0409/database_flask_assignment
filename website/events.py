@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from datetime import datetime, time as dt_time
-from website import db            
-from website.models import Event, Task   
-from website.utils import login_required_db  
+from datetime import datetime
+from website import db
+from website.models import Event, Task
+from website.utils import login_required_db
 
 events_bp = Blueprint("events", __name__)
 
@@ -14,7 +14,7 @@ def add_event():
         title = request.form.get('title')
         description = request.form.get('description')
         date_str = request.form.get('date')
-        time_str = request.form.get('time')  # new field for time
+        time_str = request.form.get('time')
 
         if not title or not date_str:
             flash("Title and date are required", category="error")
@@ -26,7 +26,6 @@ def add_event():
             flash("Invalid date format", category="error")
             return redirect(url_for("events.add_event"))
 
-        # Parse time if provided
         event_time = None
         if time_str:
             try:
@@ -47,7 +46,8 @@ def add_event():
         flash("Event added successfully!", category="success")
         return redirect(url_for("events.add_event"))
 
-    events = Event.query.filter_by(user_id=session["user_id"]).order_by(Event.date).all()
+    events = Event.query.filter_by(user_id=session["user_id"])\
+        .order_by(Event.date.asc(), Event.time.asc().nullsfirst()).all()
     return render_template('events.html', events=events, edit_event=None)
 
 # ---------------- Delete Event ----------------
@@ -80,31 +80,30 @@ def edit_event(event_id):
         except ValueError:
             flash("Invalid date format", category="error")
 
-        # Update time
         if time_str:
             try:
                 event.time = datetime.strptime(time_str, "%H:%M").time()
             except ValueError:
                 flash("Invalid time format", category="error")
         else:
-            event.time = None  # clear time if empty
+            event.time = None
 
         db.session.commit()
         flash("Event updated successfully!", category="success")
         return redirect(url_for('events.add_event'))
 
-    events = Event.query.filter_by(user_id=session["user_id"]).all()
+    events = Event.query.filter_by(user_id=session["user_id"])\
+        .order_by(Event.date.asc(), Event.time.asc().nullsfirst()).all()
     return render_template('events.html', events=events, edit_event=event)
 
 # ---------------- Calendar ----------------
 @events_bp.route('/calendar')
 @login_required_db
 def calendar():
-    # Fetch both Events and Tasks
-    events = Event.query.filter_by(user_id=session["user_id"]).all()
+    events = Event.query.filter_by(user_id=session["user_id"])\
+        .order_by(Event.date.asc(), Event.time.asc().nullsfirst()).all()
     tasks = Task.query.filter_by(user_id=session["user_id"]).all()
 
-    # Merge into a single list for calendar display
     calendar_items = []
     for e in events:
         calendar_items.append({
@@ -114,7 +113,6 @@ def calendar():
             "time": e.time.strftime("%H:%M") if e.time else None,
             "type": "event"
         })
-
     for t in tasks:
         calendar_items.append({
             "title": t.text,
@@ -125,3 +123,4 @@ def calendar():
         })
 
     return render_template('calendar.html', events=calendar_items)
+

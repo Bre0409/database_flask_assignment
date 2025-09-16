@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Schedules{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/schedules.css') }}">
+
+<div class="container">
+    <h1 class="header">Schedules Dashboard</h1>
+    <p class="description">Select a schedule to view:</p>
+</div>
+
+<hr>
+<div class="schedule-links">
+  <h4>View Schedules</h4>
+  <a href="{{ url_for('views.schedule_daily') }}">📅 Daily Schedule</a> |
+  <a href="{{ url_for('views.schedule_weekly') }}">📆 Weekly Schedule</a> |
+  <a href="{{ url_for('views.schedule_monthly') }}">🗓 Monthly Schedule</a>
+</div>
+{% endblock %}

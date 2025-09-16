@@ -1,0 +1,49 @@
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    margin-top: 10%;
+}
+.header{
+  font-size: 3.5rem;
+   text-align: center;
+  margin-top: 40px;
+  color: #444;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+}
+.description {
+  text-align: center;
+  color: #444;
+  margin-bottom: 20px;
+ 
+}
+.schedule-links{
+    margin-top: 20px; 
+    text-align: center;
+    font-size: 25px;
+}
+h4{
+    margin-bottom: 40px;
+    color: #444; 
+}
+a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #444;
+    
+}
+a:hover{
+  color: #444;  
+}
+
+@media(max-width: 768px) {
+  body {
+    background-image: url("/static/images/mydiary4ex.jpg");
+    background-size: cover;
+    background-repeat: repeat;
+  }
+  .container {
+    width: 90%;
+  }
+}
