@@ -5,7 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/events.css') }}">
 
-<body class="{% if events_count >= 4 %}bg-events-full{% else %}bg-events-empty{% endif %}">
+<body class="{% if events_count >= 4 %}events-full{% endif %}">
 
 <div class="container mt-5">
     <h2>{{ edit_event and "Edit Event" or "Add a New Event" }}</h2>
