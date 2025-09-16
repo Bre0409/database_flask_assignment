@@ -5,6 +5,8 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/events.css') }}">
 
+<body class="{% if events_count >= 4 %}bg-events-full{% else %}bg-events-empty{% endif %}">
+
 <div class="container mt-5">
     <h2>{{ edit_event and "Edit Event" or "Add a New Event" }}</h2>
     <p>{{ edit_event and "Update the event details and click 'Update'." or "Fill in the event details and click 'Add Event'." }}</p>
@@ -64,4 +66,5 @@
     <a href="{{ url_for('views.schedule_weekly') }}">📆 Weekly Schedule</a> |
     <a href="{{ url_for('views.schedule_monthly') }}">🗓 Monthly Schedule</a>
 </div>
+</body>
 {% endblock %}

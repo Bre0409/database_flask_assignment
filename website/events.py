@@ -48,7 +48,9 @@ def add_event():
 
     events = Event.query.filter_by(user_id=session["user_id"])\
         .order_by(Event.date.asc(), Event.time.asc().nullsfirst()).all()
-    return render_template('events.html', events=events, edit_event=None)
+    events_count = len(events)
+    return render_template('events.html', events=events, edit_event=None, events_count=events_count)
+
 
 # ---------------- Delete Event ----------------
 @events_bp.route('/events/delete/<int:event_id>', methods=['POST'])
@@ -60,6 +62,7 @@ def delete_event(event_id):
         db.session.commit()
         flash("Event deleted.", category="info")
     return redirect(url_for('events.add_event'))
+
 
 # ---------------- Edit Event ----------------
 @events_bp.route('/events/edit/<int:event_id>', methods=['GET', 'POST'])
@@ -94,7 +97,9 @@ def edit_event(event_id):
 
     events = Event.query.filter_by(user_id=session["user_id"])\
         .order_by(Event.date.asc(), Event.time.asc().nullsfirst()).all()
-    return render_template('events.html', events=events, edit_event=event)
+    events_count = len(events)
+    return render_template('events.html', events=events, edit_event=event, events_count=events_count)
+
 
 # ---------------- Calendar ----------------
 @events_bp.route('/calendar')
@@ -123,4 +128,3 @@ def calendar():
         })
 
     return render_template('calendar.html', events=calendar_items)
-
