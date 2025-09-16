@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        crossorigin="anonymous"
+    />
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        crossorigin="anonymous"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        body {
+            padding-top: 70px; /* ensures content starts below navbar */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" id="home" href="{{ url_for('views.home') }}">Home</a>
+
+            {% if session.get('user_id') %}
+                <a class="nav-item nav-link" id="daily_organiser" href="{{ url_for('views.task_list') }}">Daily Organiser</a>
+                <a class="nav-item nav-link" id="events" href="{{ url_for('events.add_event') }}">Add Event</a>
+                <a class="nav-item nav-link" id="calendar" href="{{ url_for('events.calendar') }}">Calendar</a>
+            {% endif %}
+        </div>
+
+        <div class="navbar-nav ml-auto">
+            {% if session.get('user_id') %}
+                <span class="navbar-text mr-3">
+                    Welcome, <strong>{{ session.get('first_name') }}</strong>
+                </span>
+                <a class="nav-item nav-link" id="logout" href="{{ url_for('auth.logout') }}">Logout</a>
+            {% else %}
+                <a class="nav-item nav-link" id="login" href="{{ url_for('auth.login') }}">Login</a>
+                <a class="nav-item nav-link" id="signUp" href="{{ url_for('auth.sign_up') }}">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <!-- ✅ Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div id="flash-messages" class="mt-2">
+          {% for category, message in messages %}
+            {% set bootstrap_category = 'danger' if category == 'error' else category %}
+            <div class="alert alert-{{ bootstrap_category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/base.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+</body>
+<footer class="text-center mt-4">Flask 2025</footer>
+</html>

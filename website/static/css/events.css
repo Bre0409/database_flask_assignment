@@ -1,0 +1,178 @@
+h2 {
+  font-size: 3.5rem;
+  text-align: center;
+  margin-top: 40px;
+  color: #444;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+}
+h2, h3, p {
+    text-align: center;
+}
+p{
+    margin-top: 20px;
+}
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    margin-top: 10%;
+}
+
+.event-form-row {
+    display: grid;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: nowrap;
+    margin-top: 40px;
+}
+
+.event-form-row input[type="text"],
+.event-form-row input[type="date"],
+.event-form-row textarea {
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 38px;
+    min-width: 180px;
+    font-family: inherit;
+    resize: none;
+    box-sizing: border-box;
+}
+
+.event-form-row textarea {
+    height: 38px;
+}
+
+.event-form-row button {
+    display: inline-block;
+  padding: 10px 25px;
+  font-size: 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+  border: 1px solid transparent;
+  box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.8);
+  background-color: #444;
+  color: #fff;
+    cursor: pointer; 
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+}
+
+.event-form-row button:hover {
+background-color: #666;
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* Upcoming Events list */
+.events-container {
+    max-width: 50%;
+    margin: 0 auto;
+    /* border: solid purple 2px; */
+;
+}
+
+.event-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.event-item {
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.event-item h5 {
+    margin: 0 0 5px;
+    font-size: 1.1rem;
+    color: #444;
+    /* border: 2px solid green; */
+}
+
+.event-item p {
+    margin: 0 0 3px;
+    font-size: 0.95rem;
+    /* border: 2px solid rgb(255, 0, 0); */
+    text-align: left;
+}
+
+.event-item small {
+    color: #444;
+    /* border: 2px solid blue; */
+    font-weight: 500;
+    font-size: medium;
+
+}
+
+.event-actions {
+    margin-top: 8px;
+    /* border: 2px solid blue; */
+    
+    
+}
+
+.edit-btn, .delete-btn {
+    font-size: 0.9rem;
+    padding: 4px 10px;
+    margin-right: 6px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+}
+
+.edit-btn {
+     background-color: rgba(0, 0, 0, 0.2);
+    color: green;
+    transition: background-color 0.3s, color 0.3s;
+  border: 1px solid transparent;
+  box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.8);
+  
+}
+
+.delete-btn {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: red;
+    transition: background-color 0.3s, color 0.3s;
+  border: 1px solid transparent;
+  box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.8);
+}
+.edit-btn:hover{
+    opacity: 0.85 ;
+    color: green;
+    text-decoration: none;
+}
+
+.delete-btn:hover {
+    opacity: 0.85;
+}
+a{
+  color: #222;
+}
+a:hover{
+  color: #444;  
+}
+
+    
+    @media(max-width: 768px){
+body {
+    background-image: url("/static/images/mydiary4ex.jpg");
+    background-size: cover;
+    background-repeat: repeat; 
+}
+}
+
+@media(max-width: 480px){
+    .events-container{
+       max-width: 100%;
+    }
+}
+    
+

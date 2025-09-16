@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Daily Schedule{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/daily.css') }}">
+
+<div class="container mt-4">
+  <h1 class="main-title">Daily Schedule</h1>
+  <p class="description">Here’s your schedule for today.</p>
+
+  <!-- ✅ Today's Date Header -->
+  <h3>{{ current_date.strftime("%d - %A, %B %Y") }}</h3>
+
+  <div class="task-list">
+    {% if daily_items %}
+      {% for item in daily_items %}
+        <div class="task {% if item.__tablename__ == 'task' and item.completed %}completed{% endif %}">
+          <span>
+            {% if item.time %}{{ item.time.strftime("%H:%M") }} - {% else %}(No time) - {% endif %}
+            {{ item.text if item.__tablename__ == 'task' else item.title }}
+            <span class="badge {% if item.__tablename__ == 'task' %}task-badge{% else %}event-badge{% endif %}">
+              {% if item.__tablename__ == 'task' %}Task{% else %}Event{% endif %}
+            </span>
+          </span>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="no-tasks">No tasks or events for today.</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="schedule-links" style="margin-top: 20px; text-align: center;">
+  <h4>View Schedules</h4>
+  <a href="{{ url_for('views.schedule_weekly') }}">📆 Weekly Schedule</a> |
+  <a href="{{ url_for('views.schedule_monthly') }}">🗓 Monthly Schedule</a>
+</div>
+{% endblock %}

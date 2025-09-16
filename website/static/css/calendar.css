@@ -1,0 +1,183 @@
+.calendar-wrapper {
+  max-width: 700px;
+  width: 100%;
+  margin: 40px auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  /* border: 2px solid blue; */
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.calendar-controls {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  
+}
+
+.calendar-controls label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.calendar-controls select,
+.calendar-controls button {
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  user-select: none;
+  background-color: white;
+  transition: background-color 0.3s ease;
+}
+.calendar-controls button{
+  background-color: #777;
+  border: #222;
+}
+
+.calendar-controls button:hover {
+  background-color: #ddd;
+}
+
+#reset-btn {
+  background-color: #333;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+
+#reset-btn:hover {
+  background-color: #555;
+}
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.calendar-header div {
+  padding: 10px 0;
+  border-bottom: 2px solid #333;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.calendar-grid div {
+  padding: 10px;
+  background-color: #eaeaea;
+  border-radius: 5px;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+  user-select: none;
+  flex-direction: column;
+  word-break: break-word;
+  box-sizing: border-box;
+}
+
+.calendar-day ul.event-list {
+  list-style: none;
+  padding-left: 5px;
+  margin-top: 4px;
+  font-size: 0.8em;
+  color: #333;
+  text-align: left;
+  max-height: 80px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.calendar-day ul.event-list li {
+  margin-bottom: 2px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: default;
+  word-break: break-word;
+}
+
+.calendar-day {
+  position: relative;
+}
+
+.event-tooltip {
+  position: absolute;
+  top: -5px;
+  left: 100%;
+  transform: translateX(10px);
+  background-color: rgba(50, 50, 50, 0.95);
+  color: black;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 0.8em;
+  width: 200px;
+  z-index: 10;
+  display: none;
+  white-space: normal;
+  text-align: left;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.calendar-day:hover .event-tooltip,
+.calendar-day:focus-within .event-tooltip {
+  display: block;
+}
+
+.calendar-day.today {
+  border: 2px solid #666;
+  font-weight: bold;
+  color: black;
+}
+a{
+  color: #222;
+}
+a:hover{
+  color: #444;  
+}
+
+
+@media (min-width: 768px) {
+  .container {
+    /* border: red solid 2px; */
+    width: 50%;
+    margin-top: 10%;
+  }
+}
+
+@media (max-width: 768px) {
+  .calendar-wrapper {
+    transform: scale(0.85);
+    transform-origin: top center;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  body {
+    background-image: url("/static/images/mydiary4ex.jpg");
+    background-size: cover;
+    background-repeat: repeat;
+  }
+}
+
+
+@media (max-width: 500px) {
+  .calendar-wrapper {
+    transform: scale(0.75);
+  }
+}

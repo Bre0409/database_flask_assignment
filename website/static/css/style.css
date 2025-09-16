@@ -1,0 +1,83 @@
+body {
+    background-image: url("/static/images/mydiary4.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    margin: 0;
+    position: relative;
+    background-position: center top;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    margin-top: 10%;
+}
+
+.navbar-nav {
+    margin: auto;
+    gap: 40px;
+   
+}
+
+.navbar-nav a #id {
+    color: blue;
+}
+
+.incorrect {
+    border-color: red !important;
+}
+/* Flash Messages */
+#flash-messages {
+    position: fixed;
+    top: 80px;           /* below the navbar */
+    right: 20px;
+    z-index: 2000;
+    width: auto;
+    max-width: 350px;
+}
+
+#flash-messages .alert {
+    font-size: 0.95rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    border-radius: 6px;
+    opacity: 0.95;
+    transition: opacity 0.3s ease;
+}
+
+#flash-messages .alert:hover {
+    opacity: 1;  /* stay solid when hovered */
+}
+a{
+  color: #222;
+}
+a:hover{
+  color: #444;  
+}
+
+
+@media (max-width: 992px) {
+    .navbar-collapse {
+        position: absolute;
+        top: 56px; 
+        left: 0;
+        right: 0;
+        background-color: #343a40; 
+        z-index: 999;
+        padding: 1rem;
+    }
+
+    .navbar-collapse.collapsing {
+        height: auto !important;
+        transition: none;
+        display: none;
+    }
+
+    .navbar-collapse.show {
+        display: block;
+    }
+}
+

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Events{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/events.css') }}">
+
+<div class="container mt-5">
+    <h2>{{ edit_event and "Edit Event" or "Add a New Event" }}</h2>
+    <p>{{ edit_event and "Update the event details and click 'Update'." or "Fill in the event details and click 'Add Event'." }}</p>
+
+    <!-- Form Add or Edit -->
+    <form 
+        action="{{ edit_event and url_for('events.edit_event', event_id=edit_event.id) or url_for('events.add_event') }}" 
+        method="POST" 
+        class="event-form-row"
+    >
+        <input 
+            type="text" 
+            name="title" 
+            placeholder="Event Title" 
+            required 
+            value="{{ edit_event.title if edit_event else '' }}"
+        >
+        <textarea name="description" placeholder="Description" rows="1">{{ edit_event.description if edit_event else '' }}</textarea>
+        <input type="date" name="date" required value="{% if edit_event and edit_event.date %}{{ edit_event.date.strftime('%Y-%m-%d') }}{% endif %}">
+        <input list="times" name="time" placeholder="HH:MM" value="{% if edit_event and edit_event.time %}{{ edit_event.time.strftime('%H:%M') }}{% endif %}">
+        <datalist id="times">
+            {% for hour in range(0,24) %}
+                <option value="{{ "%02d:00"|format(hour) }}"></option>
+                <option value="{{ "%02d:30"|format(hour) }}"></option>
+            {% endfor %}
+        </datalist>
+        <button type="submit" class="add-btn">{{ edit_event and "Update" or "Add Event" }}</button>
+    </form>
+
+    <hr>
+    <h3>Upcoming Events</h3>
+
+    <div class="events-container">
+        {% if events %}
+            {% set sorted_events = events|sort(attribute='time') %}
+            <ul class="event-list">
+                {% for event in sorted_events %}
+                    <li class="event-item">
+                        <h5>{{ event.title }}</h5>
+                        <p>{{ event.description or "No description provided." }}</p>
+                        <small>
+                            {{ event.date.strftime('%B %d, %Y') }}
+                            {% if event.time %} at {{ event.time.strftime("%H:%M") }}{% endif %}
+                        </small>
+                        <div class="event-actions">
+                            <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="edit-btn">Edit</a>
+                            <form action="{{ url_for('events.delete_event', event_id=event.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="delete-btn">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No events yet. Add your first one above!</p>
+        {% endif %}
+    </div>
+</div>
+
+<hr>
+<div class="schedule-links" style="margin-top: 20px; text-align: center;">
+  <h4>View Schedules</h4>
+  <a href="{{ url_for('views.schedule_daily') }}">📅 Daily Schedule</a> |
+  <a href="{{ url_for('views.schedule_weekly') }}">📆 Weekly Schedule</a> |
+  <a href="{{ url_for('views.schedule_monthly') }}">🗓 Monthly Schedule</a>
+</div>
+{% endblock %}

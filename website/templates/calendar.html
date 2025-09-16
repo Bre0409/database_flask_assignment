@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
+
+{% if session.get("user_id") %}
+  <!-- ✅ Send events + tasks from backend to JS -->
+  <script>
+    window.calendarEvents = {{ events | tojson }};
+  </script>
+  <script defer src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+
+  <div class="calendar-wrapper">
+    <h1 class="main-title">My Calendar</h1>
+
+    <!-- Calendar Controls -->
+    <div class="calendar-controls">
+      <!-- Navigation -->
+      <button id="prev-month" class="nav-arrow" aria-label="Previous Month">&lt;</button>
+
+      <!-- Dropdowns -->
+      <label for="day-select">Day:</label>
+      <select id="day-select"></select>
+
+      <label for="month-select">Month:</label>
+      <select id="month-select"></select>
+
+      <label for="year-select">Year:</label>
+      <select id="year-select"></select>
+
+      <button id="next-month" class="nav-arrow" aria-label="Next Month">&gt;</button>
+      <button id="reset-btn">Reset to Today</button>
+    </div>
+
+    <!-- Week headers -->
+    <div class="calendar-header">
+      <div>Sun</div>
+      <div>Mon</div>
+      <div>Tue</div>
+      <div>Wed</div>
+      <div>Thu</div>
+      <div>Fri</div>
+      <div>Sat</div>
+    </div>
+
+    <!-- Grid where JS will render days -->
+    <div id="calendar-grid" class="calendar-grid"></div>
+  </div>
+
+  <!-- 📌 Schedule Links -->
+  <hr>
+  <div class="schedule-links" style="margin-top: 20px; text-align: center;">
+    <h4>View Schedules</h4>
+    <a href="{{ url_for('views.schedule_daily') }}">📅 Daily Schedule</a> |
+    <a href="{{ url_for('views.schedule_weekly') }}">📆 Weekly Schedule</a> |
+    <a href="{{ url_for('views.schedule_monthly') }}">🗓 Monthly Schedule</a>
+  </div>
+
+{% else %}
+  <div class="alert alert-warning mt-3">
+    Please <a href="{{ url_for('auth.login') }}">log in</a> to view your calendar.
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Daily Organiser{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/daily_organiser.css') }}">
+
+<h1 class="main-title">Daily Organiser</h1>
+
+<p class="description">
+  <strong>Add, Edit, Complete</strong> or <strong>Delete</strong> tasks by selecting a day below.
+</p>
+
+<!-- Add task form -->
+<form method="POST" action="{{ url_for('views.task_list', day=selected_day) }}" class="task-form">
+  <input type="text" name="task" placeholder="Add a task for {{ selected_day }}" required>
+
+  <!-- Time Picker -->
+  <input list="times" name="task_time" placeholder="HH:MM">
+  <datalist id="times">
+    {% for hour in range(0,24) %}
+      <option value="{{ "%02d:00"|format(hour) }}"></option>
+      <option value="{{ "%02d:30"|format(hour) }}"></option>
+    {% endfor %}
+  </datalist>
+
+  <button type="submit">Add Task</button>
+</form>
+
+<!-- Display current date -->
+<p class="current-date">
+  <strong>Date:</strong> {{ selected_date.strftime("%A, %d %B %Y") }}
+</p>
+
+<!-- Day Selector Tabs -->
+<div class="day-tabs">
+  {% for day in weekdays %}
+    <a href="{{ url_for('views.task_list', day=day) }}"
+       class="day-tab {% if day == selected_day %}active{% endif %}">
+       {{ day }}
+    </a>
+  {% endfor %}
+</div>
+
+<!-- Task List -->
+<div class="task-list">
+  {% set combined_items = tasks|sort(attribute='time') %}
+  {% for item in combined_items %}
+    <div class="task {% if item.completed %}completed{% endif %}">
+      <span class="task-text" id="text-{{ item.id }}">
+        {% if item.time %}{{ item.time.strftime("%H:%M") }} - {% else %}(No time) - {% endif %}
+        {{ item.text }}
+      </span>
+
+      <!-- Edit Form -->
+      <form method="POST"
+            action="{{ url_for('views.edit_task', task_id=item.id) }}"
+            class="edit-form"
+            id="form-{{ item.id }}">
+        <input type="text" name="edited_text" value="{{ item.text }}" required>
+        <input list="times" name="edited_time" placeholder="HH:MM">
+        <button type="submit" class="save-btn small">Save</button>
+        <button type="button" class="cancel-btn small" onclick="toggleEdit({{ item.id }})">Cancel</button>
+      </form>
+
+      <!-- Action Buttons -->
+      <div class="task-actions">
+        <form method="POST"
+              action="{{ url_for('views.complete_task', task_id=item.id) }}"
+              style="display:inline;">
+          <button type="submit" class="complete">{% if item.completed %}Undo{% else %}✔{% endif %}</button>
+        </form>
+        <form method="POST"
+              action="{{ url_for('views.delete_task', task_id=item.id) }}"
+              style="display:inline;">
+          <button type="submit" class="delete">🗑</button>
+        </form>
+        <button type="button" class="edit-toggle-btn" data-task-id="{{ item.id }}">✏️</button>
+      </div>
+    </div>
+  {% else %}
+    <p class="no-tasks">No tasks for {{ selected_day }}</p>
+  {% endfor %}
+</div>
+
+<hr>
+<div class="schedule-links" style="margin-top: 20px; text-align: center;">
+  <h4>View Schedules</h4>
+  <a href="{{ url_for('views.schedule_daily') }}">📅 Daily Schedule</a> |
+  <a href="{{ url_for('views.schedule_weekly') }}">📆 Weekly Schedule</a> |
+  <a href="{{ url_for('views.schedule_monthly') }}">🗓 Monthly Schedule</a>
+</div>
+
+<script src="{{ url_for('static', filename='js/daily_organiser.js') }}"></script>
+{% endblock %}

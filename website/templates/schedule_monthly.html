@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Monthly Schedule{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/monthly.css') }}">
+
+<div class="container">
+  <h1 class="header">Monthly Schedule</h1>
+  <h2 class="main-title">{{ current_date.strftime("%B %Y") }}</h2>
+  <p class="description">Your tasks and events for this month.</p>
+
+  {% if monthly_items %}
+    <ul class="task-list">
+      {% for day, items in monthly_items.items()|sort %}
+        <li>
+          <strong>{{ day.strftime("%d - %A") }}</strong>
+          <ul>
+            {% for item in items %}
+              <li class="{% if item.__tablename__ == 'task' and item.completed %}completed{% endif %}">
+                {% if item.time %}{{ item.time.strftime("%H:%M") }} - {% else %}(No time) - {% endif %}
+                {{ item.text if item.__tablename__ == 'task' else item.title }}
+                <span class="badge {% if item.__tablename__ == 'task' %}task-badge{% else %}event-badge{% endif %}">
+                  {% if item.__tablename__ == 'task' %}Task{% else %}Event{% endif %}
+                </span>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="no-tasks">No tasks or events scheduled this month.</p>
+  {% endif %}
+</div>
+
+<div class="schedule-links" style="margin-top: 20px; text-align: center;">
+  <h4>View Schedules</h4>
+  <a href="{{ url_for('views.schedule_daily') }}">📅 Daily Schedule</a> |
+  <a href="{{ url_for('views.schedule_weekly') }}">📆 Weekly Schedule</a>
+</div>
+{% endblock %}

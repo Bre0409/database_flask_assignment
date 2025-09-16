@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+
+<h1 id="main-title" class="main-title fade-in">My Diary</h1>
+
+<p id="typed-output" class="subtitle"></p>
+
+<p class="description">
+  Welcome to <strong>My Diary</strong> — your personal digital organizer! 
+  Whether you're managing daily tasks or planning special events, My Diary makes it easy to stay on top of your life. 
+  Add items to your <strong>To-Do List</strong>, log activities in the <strong>Events List</strong>, and view everything in your <strong>Calendar</strong>. 
+  It's simple, secure, and always available to help you stay productive.
+</p>
+
+<div class="button-container">
+  {% if session.get('user_id') %}
+    <div class="login-success-message">
+      Welcome back, <strong>{{ session.get('first_name') }}</strong>! 🎉  
+      Use the navigation bar to access your content.
+    </div>
+    <a href="{{ url_for('auth.logout') }}" class="btn-home logout-btn">Logout</a>
+  {% else %}
+    <div class="alert alert-info">
+      You are not logged in. Please log in or create an account.
+    </div>
+    <a href="{{ url_for('auth.login') }}" class="btn-home login-btn">Login</a>
+    <a href="{{ url_for('auth.sign_up') }}" class="btn-home signup-btn">Sign Up</a>
+  {% endif %}
+</div>
+
+<script defer src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}
