@@ -12,8 +12,7 @@ h1 {
   text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
   color: #444;
   font-family: 'Dancing Script', cursive;
-   font-size: 3.5rem;
-   
+  font-size: 3.5rem;
 }
 
 .calendar-controls {
@@ -23,7 +22,6 @@ h1 {
   gap: 10px;
   align-items: center;
   flex-wrap: wrap;
-  
 }
 
 .calendar-controls label {
@@ -42,7 +40,8 @@ h1 {
   background-color: white;
   transition: background-color 0.3s ease;
 }
-.calendar-controls button{
+
+.calendar-controls button {
   background-color: #777;
   border: #222;
 }
@@ -119,6 +118,10 @@ h1 {
   position: relative;
 }
 
+.calendar-day {
+  position: relative;
+}
+
 .event-tooltip {
   position: absolute;
   top: -5px;
@@ -131,33 +134,35 @@ h1 {
   font-size: 0.8em;
   width: 200px;
   z-index: 10;
-  display: none;
+  display: none; /* hidden initially */
   white-space: normal;
   text-align: left;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  pointer-events: none; /* allow hover to pass through to parent */
 }
 
-.calendar-day:hover .event-tooltip,
-.calendar-day:focus-within .event-tooltip {
+.calendar-day:hover .event-tooltip {
   display: block;
+  pointer-events: auto;
 }
+
 
 .calendar-day.today {
   border: 2px solid #666;
   font-weight: bold;
   color: black;
 }
-a{
+
+a {
   color: #222;
 }
-a:hover{
+
+a:hover {
   color: #444;  
 }
 
-
 @media (min-width: 768px) {
   .container {
-    /* border: red solid 2px; */
     width: 50%;
     margin-top: 10%;
   }
@@ -177,7 +182,6 @@ a:hover{
     background-repeat: repeat;
   }
 }
-
 
 @media (max-width: 500px) {
   .calendar-wrapper {

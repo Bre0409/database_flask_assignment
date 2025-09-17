@@ -23,6 +23,13 @@
                 <span class="badge {% if item.__tablename__ == 'task' %}task-badge{% else %}event-badge{% endif %}">
                   {% if item.__tablename__ == 'task' %}Task{% else %}Event{% endif %}
                 </span>
+
+                {# ✅ Show event description if available #}
+                {% if item.__tablename__ == 'event' and item.description %}
+                  <div class="text-muted small">
+                    {{ item.description }}
+                  </div>
+                {% endif %}
               </li>
             {% endfor %}
           </ul>

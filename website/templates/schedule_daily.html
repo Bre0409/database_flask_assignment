@@ -23,6 +23,13 @@
               {% if item.__tablename__ == 'task' %}Task{% else %}Event{% endif %}
             </span>
           </span>
+
+          {# ✅ Show event description if available #}
+          {% if item.__tablename__ == 'event' and item.description %}
+            <div class="text-muted small">
+              {{ item.description }}
+            </div>
+          {% endif %}
         </div>
       {% endfor %}
     {% else %}

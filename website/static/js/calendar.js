@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
     calendarGrid.innerHTML = '';
     const firstDay = new Date(year, month, 1).getDay();
     const totalDays = new Date(year, month + 1, 0).getDate();
-
     const today = new Date();
     const isTodayMonth = today.getFullYear() === year && today.getMonth() === month;
 
@@ -83,6 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const tooltip = document.createElement('div');
         tooltip.className = 'event-tooltip';
+        tooltip.style.display = 'none';
+        tooltip.dataset.permanent = 'false'; // track click toggle
 
         dayEvents.forEach(event => {
           const li = document.createElement('li');
@@ -97,19 +98,34 @@ document.addEventListener('DOMContentLoaded', () => {
         dayDiv.appendChild(eventList);
         dayDiv.appendChild(tooltip);
 
+        // Click toggles permanent display
         dayDiv.addEventListener('click', (e) => {
           e.stopPropagation();
           document.querySelectorAll('.event-tooltip').forEach(t => {
-            if (t !== tooltip) t.style.display = 'none';
+            if (t !== tooltip) {
+              t.style.display = 'none';
+              t.dataset.permanent = 'false';
+            }
           });
-          tooltip.style.display = tooltip.style.display === 'block' ? 'none' : 'block';
+          if (tooltip.dataset.permanent === 'true') {
+            tooltip.style.display = 'none';
+            tooltip.dataset.permanent = 'false';
+          } else {
+            tooltip.style.display = 'block';
+            tooltip.dataset.permanent = 'true';
+          }
         });
 
+        // Hover shows tooltip temporarily if not permanent
         dayDiv.addEventListener('mouseenter', () => {
-          tooltip.style.display = 'block';
+          if (tooltip.dataset.permanent === 'false') {
+            tooltip.style.display = 'block';
+          }
         });
         dayDiv.addEventListener('mouseleave', () => {
-          tooltip.style.display = 'none';
+          if (tooltip.dataset.permanent === 'false') {
+            tooltip.style.display = 'none';
+          }
         });
       }
 
@@ -132,18 +148,15 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCalendar(year, month);
   }
 
-  // Dropdowns and calendar
   populateMonths();
   populateYears();
 
-  // Set dropdowns to current date
   monthSelect.value = currentDate.getMonth();
   yearSelect.value = currentDate.getFullYear();
   daySelect.value = currentDate.getDate();
 
   updateCalendar();
 
-  // Event listeners
   monthSelect.addEventListener('change', updateCalendar);
   yearSelect.addEventListener('change', updateCalendar);
 
@@ -180,15 +193,15 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCalendar();
   });
 
-  // Text bubble containing calender information accesed when clicked touched or hover over saved info
   if (calendarWrapper) {
     calendarWrapper.addEventListener('click', (event) => {
       const isInsideDay = event.target.closest('.calendar-day');
       if (!isInsideDay) {
-        document.querySelectorAll('.event-tooltip').forEach(t => t.style.display = 'none');
+        document.querySelectorAll('.event-tooltip').forEach(t => {
+          t.style.display = 'none';
+          t.dataset.permanent = 'false';
+        });
       }
     });
   }
 });
-
-
