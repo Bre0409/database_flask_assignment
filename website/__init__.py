@@ -15,13 +15,11 @@ def create_app():
     # Secret key
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'NEVERMIND1991')
 
-    # Prefer Render's DATABASE_URL (Render sets this automatically for Postgres)
-    database_url = os.getenv("DATABASE_URL")
-
+    # Database URL
+    database_url = os.getenv("DATABASE_URL") or os.getenv("RENDER_DATABASE_URL")
     if database_url:
-        app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+        app.config['SQLALCHEMY_DATABASE_URI'] = database_url + "?sslmode=require"
     else:
-        # Fallback to local database (Postgres or SQLite)
         app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
             "LOCAL_DATABASE_URL",
             "postgresql://flaskuser:mypassword123@localhost/mydiary"
@@ -29,12 +27,9 @@ def create_app():
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    # Initialize DB and migrations
     db.init_app(app)
     migrate.init_app(app, db)
 
-    
-    # Register blueprints
     from .views import views
     from .auth import auth
     from .events import events_bp
@@ -44,3 +39,4 @@ def create_app():
     app.register_blueprint(events_bp, url_prefix='/')
 
     return app
+
