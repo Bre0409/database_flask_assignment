@@ -12,15 +12,20 @@ migrate = Migrate()
 def create_app():
     app = Flask(__name__)
 
-    # Load config from environment
+    # Secret key
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'NEVERMIND1991')
 
-    # Database URL
-    database_url = os.getenv('DATABASE_URL')
+    # Prefer Render's DATABASE_URL (Render sets this automatically for Postgres)
+    database_url = os.getenv("DATABASE_URL")
+
     if database_url:
         app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flaskuser:mypassword123@localhost/mydiary'
+        # Fallback to local database (Postgres or SQLite)
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+            "LOCAL_DATABASE_URL",
+            "postgresql://flaskuser:mypassword123@localhost/mydiary"
+        )
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -28,6 +33,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
+    
     # Register blueprints
     from .views import views
     from .auth import auth
