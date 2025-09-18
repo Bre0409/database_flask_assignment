@@ -7,6 +7,12 @@ import os
 
 auth = Blueprint("auth", __name__)
 
+@views.route("/check-db")
+def check_db():
+    db_url = db.engine.url if db else "Not initialized"
+    return f"🔗 Using database: {db_url}"
+
+
 # --- SIGN UP ---
 @auth.route("/sign-up", methods=["GET", "POST"])
 def sign_up():
