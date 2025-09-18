@@ -27,6 +27,13 @@ def get_date_for_day(day_name: str) -> date:
             return today + timedelta(days=days_ahead)
     return today
 
+# Inside views.py (with other routes)
+@views.route("/check-db")
+def check_db():
+    from . import db
+    db_url = db.engine.url if db else "Not initialized"
+    return f"🔗 Using database: {db_url}"
+
 # ---------------- Home ----------------
 @views.route("/")
 def home():
