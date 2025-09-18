@@ -16,7 +16,7 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'NEVERMIND1991')
 
     # Database URL
-    database_url = os.getenv('LOCAL_DATABASE_URL')
+    database_url = os.getenv('DATABASE_URL')
     if database_url:
         app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     else:
