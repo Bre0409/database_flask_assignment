@@ -86,7 +86,7 @@
 }
 
 .day-tab.active {
-  background-color: #666; /* transparent highlight */
+  background-color: #666; 
   color: #fff;
   font-weight: bold;
   border: 2px solid #444;
@@ -230,9 +230,6 @@ a:hover{
   color: #444;  
 }
 
-/* footer{
-   margin-left: 400px;
-} */
 @media(max-width: 768px) {
   body {
     background-image: url("/static/images/mydiary4ex.jpg");

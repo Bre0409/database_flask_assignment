@@ -2,7 +2,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from . import db
 
-# ✅ Local timezone
+# Local timezone
 LOCAL_TZ = ZoneInfo("Europe/London")
 
 
@@ -15,7 +15,7 @@ class User(db.Model):
     password = db.Column(db.String(256), nullable=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(LOCAL_TZ))
 
-    # ✅ Relationships
+    # Relationships
     tasks = db.relationship(
         "Task", backref="user", lazy=True, cascade="all, delete-orphan"
     )
@@ -32,13 +32,12 @@ class Task(db.Model):
     completed = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(LOCAL_TZ))
 
-    # ✅ Due date for daily/weekly/monthly schedules
+    # Due date for daily/weekly/monthly schedules
     due_date = db.Column(db.Date, nullable=False, index=True)
 
-    # ✅ Optional specific time (only clock time, not full datetime)
     time = db.Column(db.Time, nullable=True, index=True)
 
-    # ✅ Link to User
+    # Link to User
     user_id = db.Column(
         db.Integer,
         db.ForeignKey("user.id", ondelete="CASCADE"),
@@ -54,13 +53,13 @@ class Event(db.Model):
     title = db.Column(db.String(150), nullable=False)
     description = db.Column(db.Text, nullable=True)
 
-    # ✅ Date + Time for scheduling
+    # Date + Time for scheduling
     date = db.Column(db.Date, nullable=False, index=True)
     time = db.Column(db.Time, nullable=True, index=True)
 
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(LOCAL_TZ))
 
-    # ✅ Link to User
+    # Link to User
     user_id = db.Column(
         db.Integer,
         db.ForeignKey("user.id", ondelete="CASCADE"),

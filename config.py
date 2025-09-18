@@ -13,5 +13,5 @@ class Config:
         'postgresql://flaskuser:mypassword123@localhost/mydiary'
     )
 
-    # Track modifications flag
+    # Track modifications 
     SQLALCHEMY_TRACK_MODIFICATIONS = False

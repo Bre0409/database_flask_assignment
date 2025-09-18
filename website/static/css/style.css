@@ -49,7 +49,7 @@ form {
 }
 
 #flash-messages .alert:hover {
-    opacity: 1;  /* stay solid when hovered */
+    opacity: 1;  
 }
 a{
   color: #222;

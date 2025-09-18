@@ -1,4 +1,3 @@
-# website/auth.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
@@ -55,7 +54,7 @@ def sign_up():
     except Exception as e:
         # Print the error in the terminal for debugging
         print("Error during sign-up:", e)
-        # Optionally, show a friendly flash message
+        # show a flash message
         flash("An unexpected error occurred. Please try again.", category="error")
         return redirect(url_for("auth.sign_up"))
 

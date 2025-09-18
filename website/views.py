@@ -7,7 +7,7 @@ from collections import defaultdict
 
 views = Blueprint("views", __name__)
 
-LOCAL_TZ = ZoneInfo("Europe/London")  # Europe/London timezone
+LOCAL_TZ = ZoneInfo("Europe/London")  
 
 # ---------------- Helper ----------------
 def get_date_for_day(day_name: str) -> date:

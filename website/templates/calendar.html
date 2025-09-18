@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
 
 {% if session.get("user_id") %}
-  <!-- ✅ Send events + tasks from backend to JS -->
+  <!-- Send events + tasks from backend to JS -->
   <script>
     window.calendarEvents = {{ events | tojson }};
   </script>
@@ -49,7 +49,7 @@
     <div id="calendar-grid" class="calendar-grid"></div>
   </div>
 
-  <!-- 📌 Schedule Links -->
+  <!-- Schedule Links -->
   <hr>
   <div class="schedule-links" style="margin-top: 20px; text-align: center;">
     <h4>View Schedules</h4>

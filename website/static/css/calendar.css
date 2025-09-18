@@ -134,11 +134,11 @@ h1 {
   font-size: 0.8em;
   width: 200px;
   z-index: 10;
-  display: none; /* hidden initially */
+  display: none; 
   white-space: normal;
   text-align: left;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-  pointer-events: none; /* allow hover to pass through to parent */
+  pointer-events: none;
 }
 
 .calendar-day:hover .event-tooltip {
