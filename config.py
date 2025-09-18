@@ -7,11 +7,12 @@ class Config:
     # Secret key
     SECRET_KEY = os.getenv('SECRET_KEY', 'NEVERMIND1991')
 
-    # Database URI: prefer local for dev, else fallback to Render for prod
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        'LOCAL_DATABASE_URL',
+    # Database URI: prefer Render (prod), fallback to local (dev)
+    SQLALCHEMY_DATABASE_URI = (
+        os.getenv('DATABASE_URL') or
+        os.getenv('LOCAL_DATABASE_URL') or
         'postgresql://flaskuser:mypassword123@localhost/mydiary'
     )
 
-    # Track modifications 
+    # Track modifications
     SQLALCHEMY_TRACK_MODIFICATIONS = False
