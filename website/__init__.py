@@ -8,9 +8,9 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(Config)  # Load config from Config class
 
-    # Initialize DB and migrations
+    # Initialize database and migrations
     db.init_app(app)
     migrate.init_app(app, db)
 
@@ -24,4 +24,3 @@ def create_app():
     app.register_blueprint(events_bp, url_prefix='/')
 
     return app
-
